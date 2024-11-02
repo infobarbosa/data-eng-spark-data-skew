@@ -1,0 +1,50 @@
+version: '3'
+
+services:
+  spark-master:
+    image: bitnami/spark:latest
+    container_name: spark-master
+    environment:
+      - SPARK_MODE=master
+    ports:
+      - "8080:8080"  # Porta do Spark UI
+      - "4040:4040"  # Application UI
+      - "7077:7077"  # Porta do Spark Master
+    networks:
+      - spark-network
+    volumes:
+      - ./data:/opt/bitnami/spark/data  # Adicionando volume compartilhado
+
+  spark-worker-1:
+    image: bitnami/spark:latest
+    container_name: spark-worker-1
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+    ports:
+      - "8080:18081"  # Porta do Spark UI
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
+    volumes:
+      - ./data:/opt/bitnami/spark/data  # Adicionando volume compartilhado
+
+  spark-worker-2:
+    image: bitnami/spark:latest
+    container_name: spark-worker-2
+    environment:
+      - SPARK_MODE=worker
+      - SPARK_MASTER_URL=spark://spark-master:7077
+      - SPARK_WORKER_MEMORY=1G
+    depends_on:
+      - spark-master
+    networks:
+      - spark-network
+    volumes:
+      - ./data:/opt/bitnami/spark/data  # Adicionando volume compartilhado
+
+networks:
+  spark-network:
+    driver: bridge
