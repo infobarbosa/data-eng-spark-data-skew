@@ -23,7 +23,7 @@ services:
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=1G
     ports:
-      - "8080:18081"  # Porta do Spark UI
+      - "18081:8081"  # Porta do Spark UI
     depends_on:
       - spark-master
     networks:
@@ -38,6 +38,8 @@ services:
       - SPARK_MODE=worker
       - SPARK_MASTER_URL=spark://spark-master:7077
       - SPARK_WORKER_MEMORY=1G
+    ports:
+      - "28081:8081"  # Porta do Spark UI
     depends_on:
       - spark-master
     networks:

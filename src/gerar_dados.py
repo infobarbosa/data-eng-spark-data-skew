@@ -14,4 +14,4 @@ def gerar_dados(caminho_arquivo, num_registros):
             escritor.writerow([chave, valor])
 
 if __name__ == "__main__":
-    gerar_dados('./data/dados.csv', 1000000)
+    gerar_dados('./data/dados.csv', 20000000)
