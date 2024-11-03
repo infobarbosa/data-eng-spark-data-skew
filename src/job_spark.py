@@ -8,7 +8,12 @@ if __name__ == "__main__":
         .getOrCreate()
 
     df = spark.read.csv('/opt/bitnami/spark/data/dados.csv', header=True, inferSchema=True)
+    
+    print(f"numero inicial de particoes: {df.rdd.getNumPartitions()}")
+
     df = df.repartition(4)  # Reduzir o número de partições iniciais
+
+    print(f"numero final de particoes: {df.rdd.getNumPartitions()}")
 
     agrupado = df.groupBy('chave').count()
     agrupado.show()
